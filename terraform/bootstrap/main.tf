@@ -1,7 +1,7 @@
 # S3 Bucket Creation
 
 resource "aws_s3_bucket" "s3bucket" {
-  bucket = "s3bucket-eks-labs"
+  bucket = "rihad-eks"
 }
 
 resource "aws_s3_bucket_versioning" "s3bucket" {
