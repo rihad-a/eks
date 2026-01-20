@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: threat-composer
+  labels:
+    app: threat-composer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: threat-composer
+  template:
+    metadata:
+      labels:
+        app: threat-composer
+    spec:
+      containers:
+        - name: threat-composer
+          image: rihad27/threat-composer:latest
+          ports:
+            - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: threat-composer
+spec:
+  selector:
+    app: threat-composer
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+    - name: app-port
+      protocol: TCP
+      port: 8080
+      targetPort: 3000
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: threat-composer-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "issuer"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: threat-composer.networking.rihad.co.uk
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: threat-composer
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - threat-composer.networking.rihad.co.uk
+      secretName: threat-composer-tls
