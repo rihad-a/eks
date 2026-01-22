@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: threat-composer
+  name: argo-app
   labels:
     app: threat-composer
 spec:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: threat-composer
-          image: rihad27/threat-composer:latest
+          image: 291759414346.dkr.ecr.eu-west-2.amazonaws.com/eks-project:latest
           ports:
             - containerPort: 3000
 
@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: threat-composer
+  name: argo-app
 spec:
   selector:
     app: threat-composer
@@ -45,7 +45,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: threat-composer-ingress
+  name: ingress
   annotations:
     cert-manager.io/cluster-issuer: "issuer"
 spec:
@@ -58,7 +58,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: threat-composer
+                name: argo-app
                 port:
                   number: 80
   tls:

@@ -1,60 +1,3 @@
-resource "aws_iam_role" "eks-cluster-role" {
-  name = "eks-cluster-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "sts:AssumeRole",
-        ]
-        Effect = "Allow"
-        Principal = {
-          Service = "eks.amazonaws.com"
-
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.eks-cluster-role.name
-}
-
-resource "aws_eks_cluster" "eks_labs" {
-  name     = var.ekscluster-name
-  role_arn = aws_iam_role.eks-cluster-role.arn
-  vpc_config {
-    endpoint_private_access = true
-    endpoint_public_access  = true
-    subnet_ids = [
-      aws_subnet.private_1.id,
-      aws_subnet.private_2.id,
-      aws_subnet.private_3.id,
-      aws_subnet.public_1.id,
-      aws_subnet.public_2.id,
-      aws_subnet.public_3.id
-    ]
-  }
-  access_config {
-    authentication_mode                         = "API"
-    bootstrap_cluster_creator_admin_permissions = true
-  }
-  bootstrap_self_managed_addons = true
-  version                       = var.eks-version
-  upgrade_policy {
-    support_type = "STANDARD"
-  }
-  depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy]
-}
-
-resource "aws_eks_addon" "example" {
-  cluster_name  = aws_eks_cluster.eks_labs.name
-  addon_name    = "eks-pod-identity-agent"
-  addon_version = "v1.3.10-eksbuild.2"
-}
-
 # EKS Pod Identity Association
 
 data "aws_iam_policy_document" "assume_role" {
@@ -74,7 +17,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "pod_identity" {
-  name               = "eks-pod-identity"
+  name               = var.podidentity-rolename
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -85,20 +28,21 @@ resource "aws_iam_role_policy_attachment" "s3" {
 
 resource "aws_eks_pod_identity_association" "pod_identity" {
   cluster_name    = var.ekscluster-name
-  namespace       = "pod-identity"
-  service_account = "pod-identity-sa"
+  namespace       = var.podidentity-namespace
+  service_account = var.podidentity-sa
   role_arn        = aws_iam_role.pod_identity.arn
+
 }
 
-# Setting up cert manager
+# Setting up certificate manager
 
 resource "aws_iam_role" "cert-manager" {
-  name               = "cert-manager"
+  name               = var.certmanager-rolename
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_iam_policy" "cert-manager" {
-  name = "eks-cert-manager"
+  name = var.certmanager-policyname
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -137,20 +81,21 @@ resource "aws_iam_role_policy_attachment" "cert-manager" {
 
 resource "aws_eks_pod_identity_association" "cert-manager" {
   cluster_name    = var.ekscluster-name
-  namespace       = "cert-manager"
-  service_account = "cert-manager"
+  namespace       = var.certmanager-namespace
+  service_account = var.certmanager-sa
   role_arn        = aws_iam_role.cert-manager.arn
+
 }
 
 # Setting up external dns
 
 resource "aws_iam_role" "external-dns" {
-  name               = "external-dns"
+  name               = var.extdns-rolename
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_iam_policy" "external-dns" {
-  name = "eks-external-dns"
+  name = var.extdns-policyname
 
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -187,7 +132,8 @@ resource "aws_iam_role_policy_attachment" "external-dns" {
 
 resource "aws_eks_pod_identity_association" "external-dns" {
   cluster_name    = var.ekscluster-name
-  namespace       = "external-dns"
-  service_account = "external-dns"
+  namespace       = var.extdns-namespace
+  service_account = var.extdns-sa
   role_arn        = aws_iam_role.external-dns.arn
+
 }

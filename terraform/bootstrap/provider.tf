@@ -20,7 +20,7 @@ provider "aws" {
   default_tags {
     tags = {
       Environment = "dev"
-      Project     = "ecs"
+      Project     = "eks"
       Owner       = "rihad"
       Terraform   = "true"
     }

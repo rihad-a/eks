@@ -1,3 +1,5 @@
+# VPC Creation
+
 resource "aws_vpc" "terraform_vpc" {
   cidr_block           = var.vpc-cidr
   instance_tenancy     = "default"
@@ -8,9 +10,10 @@ resource "aws_vpc" "terraform_vpc" {
 
 locals {
   additional_tags = {
-    "kubernetes.io/cluster/${var.ekscluster-name}" = "owned"
+    "kubernetes.io/cluster/eks-cluster"            = "owned"
     "kubernetes.io/role/elb"                       = "1"
   }
+
 }
 
 resource "aws_internet_gateway" "gw" {
@@ -58,6 +61,7 @@ resource "aws_subnet" "public_3" {
   vpc_id                  = aws_vpc.terraform_vpc.id
   map_public_ip_on_launch = var.subnet-map_public_ip_on_launch_public
   availability_zone       = var.subnet-az-2c
+
   tags                    = local.additional_tags
 }
 
@@ -66,6 +70,7 @@ resource "aws_subnet" "private_3" {
   vpc_id                  = aws_vpc.terraform_vpc.id
   map_public_ip_on_launch = var.subnet-map_public_ip_on_launch_private
   availability_zone       = var.subnet-az-2c
+
   tags                    = local.additional_tags
 }
 
