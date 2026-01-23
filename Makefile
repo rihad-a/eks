@@ -54,16 +54,16 @@ apply-argoapp:
 uninstall-nginx:
 	helm uninstall nginx-ingress -n nginx-ingress \
 
-uninstall-certman:
+uninstall-certman: #CRD
 	helm uninstall cert-manager -n cert-manager \
 
 uninstall-kubepromstack:
 	helm uninstall kube-prometheus-stack -n kube-prometheus-stack \
 
-uninstall-argocd:
+uninstall-argocd: #CRD
 	helm uninstall argo-cd -n argo-cd \
 
-uninstall-argocd:
+uninstall-extdns:
 	helm uninstall external-dns -n external-dns \
 
  
