@@ -61,6 +61,12 @@ jobs:
         kubectl apply -f cert-man/issuer.yaml 
       continue-on-error: true
 
+    - name: Adding Kube-Prometheus-Stack Repo
+      run:  |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      continue-on-error: true
+      
     - name: Installing Kube-Prometheus-Stack
       run:  |
         aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  

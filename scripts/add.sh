@@ -33,6 +33,10 @@ echo "Applying the issuer" && \
 cd .. && \
 kubectl apply -f cert-man/issuer.yaml \
 
+# Adding KubePromStack repo
+echo "Adding KubePromStack repo" && \
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts \
+
 # Installing Kube-Prometheus-Stack
 echo "Installing Kube-Prometheus-Stack" && \
 cd terraform && \

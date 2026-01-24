@@ -27,6 +27,10 @@ install-certman:
 apply-issuer:
 	kubectl apply -f cert-man/issuer.yaml \
 
+addrepo-kubepromstack:
+	helm repo add prometheus-community \
+    https://prometheus-community.github.io/helm-charts
+
 install-kubepromstack:
 	cd terraform && \
 	helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f helm-values/prom-stack.yaml \
