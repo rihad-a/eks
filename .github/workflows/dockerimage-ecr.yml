@@ -27,8 +27,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-          role-to-assume: ${{ secrets.GitHubActionsTerraformRole }}
-          role-session-name: GitHubActionsTerraformRole
+          role-to-assume: ${{ secrets.GitHubActionsRole }}
+          role-session-name: GitHubActionsRole
           aws-region: ${{ env.AWS_REGION }}
 
     - name: Authenticating docker client to Amazon ECR registry 
