@@ -1,0 +1,37 @@
+name: Deleting and uninstalling all helm resources
+
+on:
+  workflow_dispatch:
+    
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write   
+  id-token: write  
+
+env: 
+  AWS_REGION : "eu-west-2"
+  CLUSTER_NAME : "eks-cluster"
+
+jobs:
+  DockerImageBuildAndPush:
+    runs-on: ubuntu-24.04
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+          role-to-assume: ${{ secrets.GitHubActionsRole }}
+          role-session-name: GitHubActionsRole
+          aws-region: ${{ env.AWS_REGION }}
+
+    - name: Setting EKS cluster config 
+      run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}
+
+    - name: Running add.sh script for all Helm resources
+      run: -chdir=scripts sh scripts/delete.sh
+
+      
