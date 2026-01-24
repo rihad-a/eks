@@ -31,7 +31,7 @@ jobs:
     - name: Running add.sh script for all Helm resources
       run:  |
         aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}
-        cd scripts
+        cd eks/scripts
         sh scripts/add.sh
 
       
