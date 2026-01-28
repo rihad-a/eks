@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: threat-composer-app
+  name: hedgedoc-app
   namespace: argo-cd
 spec:
   project: default
@@ -13,7 +13,7 @@ spec:
 
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: threat-composer-app
+    namespace: hedgedoc-app
 
   syncPolicy:
     automated:

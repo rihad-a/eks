@@ -1,0 +1,50 @@
+FROM node:22-slim AS builder
+# sha value is to utilise node:25-slim base image
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY package.json yarn.lock .yarnrc.yml .
+
+COPY .yarn .yarn
+
+RUN yarn install
+
+COPY . . 
+
+RUN yarn build
+
+RUN yarn workspaces focus --production
+
+
+FROM node:22-alpine AS production
+# sha value is to utilise node:25-alpine base image
+
+RUN adduser -u 1001 -D rihad
+
+WORKDIR /app
+
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/lib /app/lib
+COPY --from=builder /app/public /app/public
+COPY --from=builder /app/locales /app/locales
+COPY --from=builder /app/app.js /app/app.js
+COPY --from=builder /app/package.json /app/package.json
+COPY --from=builder /app/yarn.lock /app/yarn.lock
+
+USER rihad
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+
+
+
+
+
+
+
+
+
+

@@ -3,23 +3,45 @@ kind: Deployment
 metadata:
   name: argo-app
   labels:
-    app: threat-composer
+    app: hedgedoc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: threat-composer
+      app: hedgedoc
   template:
     metadata:
       labels:
-        app: threat-composer
+        app: hedgedoc
     spec:
       containers:
-        - name: threat-composer
+        - name: hedgedoc
           image: 291759414346.dkr.ecr.eu-west-2.amazonaws.com/eks-project:latest
           ports:
             - containerPort: 3000
-
+      env:
+      - name: CMD_DB_URL
+        valueFrom:
+          secretKeyRef:
+            name: db
+            key: CMD_DB_URL
+      - name: CMD_DOMAIN
+        valueFrom:
+          secretKeyRef:
+            name: db
+            key: CMD_DOMAIN
+      - name: CMD_URL_ADDPORT
+        valueFrom:
+          secretKeyRef:
+            name: db
+            key: CMD_URL_ADDPORT
+      volumeMounts:
+      - name: secret-volume
+        mountPath: "/public/uploads"
+    volumes:
+    - name: secret-volume
+      secret:
+        secretName: db
 ---
 
 apiVersion: v1
@@ -28,7 +50,7 @@ metadata:
   name: argo-app
 spec:
   selector:
-    app: threat-composer
+    app: hedgedoc
   type: ClusterIP
   ports:
     - name: http
@@ -51,7 +73,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: threat-composer.networking.rihad.co.uk
+    - host: hedgedoc.networking.rihad.co.uk
       http:
         paths:
           - path: /
@@ -63,5 +85,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - threat-composer.networking.rihad.co.uk
-      secretName: threat-composer-tls
+        - hedgedoc.networking.rihad.co.uk
+      secretName: hedgedoc-tls
