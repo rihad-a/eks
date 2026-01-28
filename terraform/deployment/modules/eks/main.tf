@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks-cluster-role.name
 }
 
-resource "aws_eks_cluster" "eks_labs" {
+resource "aws_eks_cluster" "eks" {
   name     = var.ekscluster-name
   role_arn = aws_iam_role.eks-cluster-role.arn
   vpc_config {
@@ -52,7 +52,7 @@ resource "aws_eks_cluster" "eks_labs" {
 }
 
 resource "aws_eks_addon" "pod_identity" {
-  cluster_name  = aws_eks_cluster.eks_labs.name
+  cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "eks-pod-identity-agent"
   addon_version = "v1.3.10-eksbuild.2"
 }
@@ -60,7 +60,7 @@ resource "aws_eks_addon" "pod_identity" {
 # Node Group Creation
 
 resource "aws_eks_node_group" "eks-node-group" {
-  cluster_name    = aws_eks_cluster.eks_labs.name
+  cluster_name    = aws_eks_cluster.eks.name
   node_group_name = var.ng-name
   node_role_arn   = aws_iam_role.eks-ng-role.arn
   instance_types  = [var.ng-instancetype]
@@ -116,4 +116,36 @@ resource "aws_iam_role_policy_attachment" "AmazonEKS_CNI_Policy" {
 resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.eks-ng-role.name
+}
+
+# Adding user permissions to cluster
+
+data "aws_iam_user" "Rihad" {
+  user_name = "Rihad"
+}
+
+resource "aws_eks_access_entry" "Rihad" {
+  cluster_name  = aws_eks_cluster.eks.name
+  principal_arn = data.aws_iam_user.Rihad.arn
+  type          = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "Rihad_AmazonEKSAdminPolicy" {
+  cluster_name  = aws_eks_cluster.eks.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+  principal_arn = aws_eks_access_entry.Rihad.principal_arn
+
+  access_scope {
+    type = "cluster"
+  }
+}
+
+resource "aws_eks_access_policy_association" "Rihad_AmazonEKSClusterAdminPolicy" {
+  cluster_name  = aws_eks_cluster.eks.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  principal_arn = aws_eks_access_entry.Rihad.principal_arn
+
+  access_scope {
+    type = "cluster"
+  }
 }
