@@ -35,6 +35,9 @@ spec:
                 secretKeyRef:
                   name: db
                   key: CMD_URL_ADDPORT
+            - name: ssl
+              value: true
+
           volumeMounts:
             - name: uploads-store
               mountPath: "/app/public/uploads"
