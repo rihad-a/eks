@@ -41,7 +41,8 @@ spec:
             - name: uploads-store
               mountPath: "/public/uploads"
             - name: global-bundle-volume
-              mountPath: "/etc/ssl/certs"
+              mountPath: "/etc/ssl/certs/global-bundle.pem"
+              subPath: global-bundle.pem
       volumes:
         - name: uploads-store
           emptyDir: {}
