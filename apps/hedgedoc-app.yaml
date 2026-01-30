@@ -38,19 +38,14 @@ spec:
           volumeMounts:
             - name: uploads-store
               mountPath: "/app/public/uploads"
-            - name: rds-ssl
-              mountPath: "/app/etc/ssl/certs/global-bundle.pem"
-              subPath: "global-bundle.pem"
-              readOnly: true
+            - name: globaL-bundle-volume
+              mountPath: "/app/etc/ssl/certs"
       volumes:
         - name: uploads-store
           emptyDir: {}
-        - name: rds-ssl
-          secret:
-            secretName: db
-            items:
-              - key: global-bundle.pem
-                path: global-bundle.pem
+        - name: global-bundle-volume
+          configMap:
+            name: global-bundle
 
 ---
 apiVersion: v1
