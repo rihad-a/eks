@@ -39,6 +39,10 @@ spec:
               value: "true"
             - name: NODE_EXTRA_CA_CERTS
               value: "/etc/ssl/certs/global-bundle.pem"
+            - name: CMD_EMAIL
+              value: "true"
+            - name: CMD_ALLOW_EMAIL_REGISTER
+              value: "true"
           volumeMounts:
             - name: uploads-store
               mountPath: "/public/uploads"
@@ -51,6 +55,23 @@ spec:
         - name: global-bundle-volume
           configMap:
             name: global-bundle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+
+
 
 ---
 apiVersion: v1
