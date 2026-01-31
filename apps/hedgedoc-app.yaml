@@ -47,6 +47,10 @@ spec:
               value: "true"
             - name: HD_AUTH_LOCAL_ENABLE_REGISTER
               value: "true"
+            - name: CMD_ALLOW_ANONYMOUS
+              value: "false"
+            - name: CMD_ALLOW_ANONYMOUS_EDITS
+              valuue: "false"
           volumeMounts:
             - name: uploads-store
               mountPath: "/public/uploads"
