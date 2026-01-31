@@ -137,3 +137,91 @@ resource "aws_eks_pod_identity_association" "external-dns" {
   role_arn        = aws_iam_role.external-dns.arn
 
 }
+
+# Setting up EFS CSI Driver
+
+resource "aws_iam_role" "efs-csi-driver-role" {
+  name               = var.efs-csi-driver-rolename
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_policy" "efs-csi-driver-policy" {
+  name = var.efs-csi-driver-policyname
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "AllowDescribe",
+        "Effect" : "Allow",
+        "Action" : [
+          "elasticfilesystem:DescribeAccessPoints",
+          "elasticfilesystem:DescribeFileSystems",
+          "elasticfilesystem:DescribeMountTargets",
+          "ec2:DescribeAvailabilityZones"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "AllowCreateAccessPoint",
+        "Effect" : "Allow",
+        "Action" : [
+          "elasticfilesystem:CreateAccessPoint"
+        ],
+        "Resource" : "*",
+        "Condition" : {
+          "Null" : {
+            "aws:RequestTag/efs.csi.aws.com/cluster" : "false"
+          },
+          "ForAllValues:StringEquals" : {
+            "aws:TagKeys" : "efs.csi.aws.com/cluster"
+          }
+        }
+      },
+      {
+        "Sid" : "AllowTagNewAccessPoints",
+        "Effect" : "Allow",
+        "Action" : [
+          "elasticfilesystem:TagResource"
+        ],
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "elasticfilesystem:CreateAction" : "CreateAccessPoint"
+          },
+          "Null" : {
+            "aws:RequestTag/efs.csi.aws.com/cluster" : "false"
+          },
+          "ForAllValues:StringEquals" : {
+            "aws:TagKeys" : "efs.csi.aws.com/cluster"
+          }
+        }
+      },
+      {
+        "Sid" : "AllowDeleteAccessPoint",
+        "Effect" : "Allow",
+        "Action" : "elasticfilesystem:DeleteAccessPoint",
+        "Resource" : "*",
+        "Condition" : {
+          "Null" : {
+            "aws:ResourceTag/efs.csi.aws.com/cluster" : "false"
+          }
+        }
+      }
+    ]
+    }
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "efs-csi-driver" {
+  policy_arn = aws_iam_policy.efs-csi-driver-policy.arn
+  role       = aws_iam_role.efs-csi-driver-role.name
+}
+
+resource "aws_eks_pod_identity_association" "efs-csi-driver-policy" {
+  cluster_name    = var.ekscluster-name
+  namespace       = var.efs-csi-driver-namespace
+  service_account = var.efs-csi-driver-sa
+  role_arn        = aws_iam_role.efs-csi-driver-role.arn
+
+}

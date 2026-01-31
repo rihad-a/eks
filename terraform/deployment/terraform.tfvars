@@ -22,22 +22,28 @@ ng-name         = "eks-node-group"
 ng-instancetype = "t3.medium"
 ng-capacitytype = "SPOT"
 ng-desiredsize  = 2
-ng-maxsize      = 4 
-ng-minsize      = 2 
+ng-maxsize      = 4
+ng-minsize      = 2
 ng-rolename     = "eks-node-group-role"
 
 # Pod Identity Association 
 
-podidentity-rolename   = "eks-pod-identity-role"
-podidentity-namespace  = "pod-identity"
-podidentity-sa         = "pod-identity"
-certmanager-rolename   = "cert-manager-role"
-certmanager-policyname = "cert-manager-policy"
-certmanager-namespace  = "cert-manager"
-certmanager-sa         = "cert-manager"
-extdns-rolename        = "external-dns-role"
-extdns-policyname      = "external-dns-policy"
-extdns-namespace       = "external-dns"
-extdns-sa              = "external-dns"
+podidentity-rolename           = "eks-pod-identity-role"
+podidentity-namespace          = "pod-identity"
+podidentity-sa                 = "pod-identity"
+certmanager-rolename           = "cert-manager-role"
+certmanager-policyname         = "cert-manager-policy"
+certmanager-namespace          = "cert-manager"
+certmanager-sa                 = "cert-manager"
+extdns-rolename                = "external-dns-role"
+extdns-policyname              = "external-dns-policy"
+extdns-namespace               = "external-dns"
+extdns-sa                      = "external-dns"
+efs-csi-driver-rolename        = "efs-csi-driver-role"
+efs-csi-driver-policyname      = "efs-csi-driver-policy"
+efs-csi-driver-namespace       = "efs-csi-driver"
+efs-csi-driver-sa              = "efs-csi-driver"
+
+
 
 

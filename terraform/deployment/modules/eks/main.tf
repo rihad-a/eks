@@ -57,6 +57,12 @@ resource "aws_eks_addon" "pod_identity" {
   addon_version = "v1.3.10-eksbuild.2"
 }
 
+resource "aws_eks_addon" "efs_csi_driver" {
+  cluster_name  = aws_eks_cluster.eks.name
+  addon_name    = "aws-efs-csi-driver"
+  addon_version = "v2.3.0-eksbuild.1"
+}
+
 # Node Group Creation
 
 resource "aws_eks_node_group" "eks-node-group" {
