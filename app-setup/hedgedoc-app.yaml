@@ -130,14 +130,14 @@ spec:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: efs-static-sc
+  name: efs-sc
 provisioner: efs.csi.aws.com
 
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: efs-static-pv
+  name: efs-pv
 spec:
   capacity:
     storage: 5Gi
@@ -145,7 +145,7 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: efs-static-sc
+  storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
     volumeHandle: 
@@ -155,13 +155,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-static-pvc
+  name: efs-pvc
   namespace: default
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: efs-static-sc
-  volumeName: efs-static-pv
+  storageClassName: efs-sc
+  volumeName: efs-pv
   resources:
     requests:
       storage: 5Gi
