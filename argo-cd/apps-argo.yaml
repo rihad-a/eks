@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/rihad-a/eks.git'
     targetRevision: HEAD
-    path: apps
+    path: app-setup
 
   destination:
     server: 'https://kubernetes.default.svc'
