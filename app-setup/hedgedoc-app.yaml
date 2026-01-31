@@ -139,7 +139,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: efs-pvc
-  namespace: default
+  namespace: hedgedoc-app
 spec:
   accessModes:
     - ReadWriteMany
