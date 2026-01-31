@@ -44,6 +44,10 @@ efs-csi-driver-policyname      = "efs-csi-driver-policy"
 efs-csi-driver-namespace       = "efs-csi-driver"
 efs-csi-driver-sa              = "efs-csi-driver"
 
+# EFS
 
-
+efs-name       = "eks-efs"
+efs-sgname     = "efs-sg"
+posix_user_uid = 1001
+posix_user_gid = 1001
 

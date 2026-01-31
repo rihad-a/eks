@@ -196,4 +196,25 @@ variable "efs-csi-driver-sa" {
   description = "The service account of the efs csi driver"
 }
 
+# EFS Variables
+
+variable "efs-name" {
+  type = string
+  description = "The EFS name"
+}
+
+variable "efs-sgname" {
+  type = string
+  description = "The EFS sg name"
+}
+
+variable "posix_user_uid" {
+  description = "POSIX user ID for EFS access point"
+  type        = number
+}
+
+variable "posix_user_gid" {
+  description = "POSIX group ID for EFS access point"
+  type        = number
+}
 

@@ -30,3 +30,19 @@ output "subnet-pri3" {
   value       = aws_subnet.private_3.id
 }
 
+output "pri-subnet-ids" {
+  description = "A list of the private subnet ids"
+  value = ["aws_subnet.private_1.id", "aws_subnet.private_2.id", "aws_subnet.private_3.id"]
+}
+
+output "vpc-id" {
+  description = "The vpc id"
+  value = aws_vpc.terraform_vpc.id
+}
+
+output "vpc-cidr" {
+  description = "The vpc cidr block"
+  value = aws_vpc.terraform_vpc.cidr_block
+}
+
+

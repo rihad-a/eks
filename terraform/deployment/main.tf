@@ -73,3 +73,19 @@ module "pod-identity-association" {
   ekscluster-name = module.eks.ekscluster-name
 
 }
+
+# EFS module
+
+module "pod-identity-association" {
+  source = "./modules/efs"
+
+  efs-name                = var.efs-name
+  efs-sgname              = var.efs-sgname
+  posix_user_uid          = var.posix_user_uid
+  posix_user_gid          = var.posix_user_gid
+
+  # Use these outputs
+  pri-subnet-ids = module.aws_vpc.pri-subnet-ids
+  vpc-id         = module.aws_vpc.vpc-id
+  vpc-cidr       = module.aws_vpc.vpc-cidr
+}
