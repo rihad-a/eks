@@ -57,7 +57,7 @@ spec:
               value: "true"
           volumeMounts:
             - name: uploads-store
-              mountPath: "/app/public/uploads"
+              mountPath: "/public/uploads"
             - name: global-bundle-volume
               mountPath: "/etc/ssl/certs/global-bundle.pem"
               subPath: global-bundle.pem
@@ -135,7 +135,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-00eeb1def9950441f
+    volumeHandle: fs-0b1a331200bf3bd90
     ## Update EFS File System ID after running Terraform Apply and finding resource in AWS
 
 ---
