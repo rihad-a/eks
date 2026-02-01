@@ -21,7 +21,7 @@ RUN yarn workspaces focus --production
 FROM node:22-alpine AS production
 # sha value is to utilise node:25-alpine base image
 
-RUN adduser -u 1001 -D rihad
+RUN adduser -u 10000 -D rihad
 
 WORKDIR /app
 

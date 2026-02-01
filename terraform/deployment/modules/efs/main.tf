@@ -52,7 +52,7 @@ resource "aws_efs_access_point" "pod_access_point" {
     creation_info {
       owner_gid   = var.posix_user_gid
       owner_uid   = var.posix_user_uid
-      permissions = "755"
+      permissions = "775"
     }
   }
 }
