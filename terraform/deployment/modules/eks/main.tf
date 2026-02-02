@@ -55,12 +55,17 @@ resource "aws_eks_addon" "pod_identity" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "eks-pod-identity-agent"
   addon_version = "v1.3.10-eksbuild.2"
+
+  depends_on = [ aws_eks_cluster.eks ]
 }
+
 
 resource "aws_eks_addon" "efs_csi_driver" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "aws-efs-csi-driver"
   addon_version = "v2.3.0-eksbuild.1"
+
+  depends_on = [ aws_eks_cluster.eks ]
 }
 
 # Node Group Creation
