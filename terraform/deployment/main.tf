@@ -120,7 +120,7 @@ module "rds" {
   subnet-pri2    = module.aws_vpc.subnet-pri2
   subnet-pri3    = module.aws_vpc.subnet-pri3
   vpc-id         = module.aws_vpc.vpc-id
-  ekscluster-id  = module.eks.ekscluster-id
+  ekscluster-name = module.eks.ekscluster-name
   
   depends_on = [module.eks, module.aws_vpc]
 }

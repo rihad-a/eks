@@ -103,7 +103,7 @@ variable "vpc-id" {
   description = "The vpc id"
 }
 
-variable "ekscluster-id" {
+variable "ekscluster-name" {
   type = string
-  description = "The id of the EKS cluster"
+  description = "The name of the EKS cluster"
 }

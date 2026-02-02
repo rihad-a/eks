@@ -53,8 +53,8 @@ resource "aws_db_instance" "appdb" {
 
 # create security group for the database
 
-data "aws_security_group" "eks-cluster" {
-  id = var.ekscluster-id
+data "aws_eks_cluster" "eks" {
+  name = var.ekscluster-name
 }
 
 resource "aws_security_group" "rds-sg" {
@@ -66,7 +66,7 @@ resource "aws_security_group" "rds-sg" {
     from_port        = 5432
     to_port          = 5432
     protocol         = "tcp"
-    security_groups  = [data.aws_security_group.eks-cluster.id]
+    security_groups  = [data.aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id]
   }
 
   egress {
