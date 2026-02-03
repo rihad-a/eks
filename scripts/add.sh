@@ -61,9 +61,13 @@ helm install external-secrets external-secrets/external-secrets \
 echo "Applying Secret Store Yaml" && \
 kubectl apply -f secrets-manager/secret-store.yaml \
 
+# Creating the hedgedoc-app namespace
+echo "Creating the hedgedoc-app namespace" && \
+kubectl create namespace hedgedoc-app  \
+
 # Applying External Secret Yaml
 echo "Applying External Secret Yaml" && \
-kubectl apply -f secrets-manager/external-secret.yaml \
+kubectl apply -f secrets-manager/external-secret.yaml -n hedgedoc-app \
 
 # Adding ArgoCD repo
 echo "Adding ArgoCD repo" && \
@@ -71,13 +75,15 @@ helm repo add argo https://argoproj.github.io/argo-helm \
 
 # Installing ArgoCD
 echo "Installing ArgoCD" && \
+cd terraform && \
 helm install argo-cd argo/argo-cd -f helm-values/argocd.yaml \
     --version 9.3.4 \
     --namespace argo-cd \
-    --create-namespace \
 	--set crds.enabled=true \
+    --create-namespace \
 
 # Applying the Argo App
 echo "Applying the Argo App" && \
+cd .. && \
 kubectl apply -f argo-cd/apps-argo.yaml
 

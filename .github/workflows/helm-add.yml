@@ -93,11 +93,17 @@ jobs:
         aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  
         kubectl apply -f secrets-manager/secret-store.yaml
       continue-on-error: true
+
+    - name: Creating hedgedoc-app namespace
+      run:  |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  
+        kubectl create namespace hedgedoc-app
+      continue-on-error: true
         
     - name: Applying External Secret Yaml
       run:  |
         aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  
-        kubectl apply -f secrets-manager/external-secret.yaml
+        kubectl apply -f secrets-manager/external-secret.yaml -n hedgedoc-app
       continue-on-error: true
 
     - name: Adding ArgoCD Repo
