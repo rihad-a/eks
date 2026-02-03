@@ -27,18 +27,12 @@ spec:
             - name: CMD_DB_URL
               valueFrom:
                 secretKeyRef:
-                  name: db
+                  name: db-url
                   key: CMD_DB_URL
             - name: CMD_DOMAIN
-              valueFrom:
-                secretKeyRef:
-                  name: db
-                  key: CMD_DOMAIN
+              value: "hedgedoc.networking.rihad.co.uk"
             - name: CMD_URL_ADDPORT
-              valueFrom:
-                secretKeyRef:
-                  name: db
-                  key: CMD_URL_ADDPORT
+              value: "false"
             - name: NODE_EXTRA_CA_CERTS
               value: "/etc/ssl/certs/global-bundle.pem"
             - name: CMD_EMAIL

@@ -41,6 +41,18 @@ kubectl delete crd \
     applicationsets.argoproj.io \
     appprojects.argoproj.io \
 
+# Deleting External Secret Yaml
+echo "Deleting External Secret Yaml" && \
+kubectl delete -f secrets-manager/external-secret.yaml \
+
+# Deleting Secret Store Yaml
+echo "Deleting Secret Store Yaml" && \
+kubectl delete -f secrets-manager/secret-store.yaml \
+
+# Uninstalling External Secrets Operator
+echo "Deleting Secret Store Yaml" && \
+helm uninstall external-secrets -n external-secret \
+
 # Uninstalling External DNS
 echo "Uninstalling External DNS" && \
 helm uninstall external-dns -n external-dns \

@@ -45,6 +45,26 @@ helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f
     --namespace kube-prometheus-stack \
     --create-namespace \
 
+# Adding External Secrets Operator repo
+echo "Adding External Secrets Operator repo" && \
+helm repo add external-secrets https://charts.external-secrets.io \
+
+# Installing External Secrets Operator
+echo "Installing External Secrets Operator" && \
+cd .. && \
+helm install external-secrets external-secrets/external-secrets \
+    --version 1.3.1 \
+    --namespace external-secret \
+    --create-namespace \
+
+# Applying Secret Store Yaml
+echo "Applying Secret Store Yaml" && \
+kubectl apply -f secrets-manager/secret-store.yaml \
+
+# Applying External Secret Yaml
+echo "Applying External Secret Yaml" && \
+kubectl apply -f secrets-manager/external-secret.yaml \
+
 # Adding ArgoCD repo
 echo "Adding ArgoCD repo" && \
 helm repo add argo https://argoproj.github.io/argo-helm \
@@ -59,6 +79,5 @@ helm install argo-cd argo/argo-cd -f helm-values/argocd.yaml \
 
 # Applying the Argo App
 echo "Applying the Argo App" && \
-cd .. && \
 kubectl apply -f argo-cd/apps-argo.yaml
 

@@ -85,6 +85,24 @@ jobs:
         kubectl delete crd applicationsets.argoproj.io
         kubectl delete crd appprojects.argoproj.io
       continue-on-error: true
+      
+    - name: Deleting External Secret Yaml
+      run:  |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  
+        kubectl delete -f secrets-manager/external-secret.yaml
+      continue-on-error: true
+
+    - name: Deleting Secret Store Yaml
+      run:  |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  
+        kubectl delete -f secrets-manager/secret-store.yaml
+      continue-on-error: true
+
+    - name: Uninstalling External Secrets Operator
+      run:  |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}  
+        helm uninstall external-secrets -n external-secret
+      continue-on-error: true
         
     - name: Uninstalling External DNS
       run:  |

@@ -38,6 +38,22 @@ install-kubepromstack:
         --namespace kube-prometheus-stack \
         --create-namespace \
 
+addrepo-externalsecretsoperator:
+	helm repo add external-secrets \
+    https://charts.external-secrets.io
+
+install-externalsecretsoperator:
+	helm install external-secrets external-secrets/external-secrets \
+        --version 1.3.1 \
+        --namespace external-secret \
+        --create-namespace \
+
+apply-secretstoreyaml:
+	kubectl apply -f secrets-manager/secret-store.yaml \
+
+apply-externalsecretyaml:
+	kubectl apply -f secrets-manager/external-secret.yaml \
+
 addrepo-argocd:
 	helm repo add argo \
     https://argoproj.github.io/argo-helm
@@ -85,6 +101,15 @@ deletecrd-argocd:
 		applications.argoproj.io  \
     	applicationsets.argoproj.io \
     	appprojects.argoproj.io \
+
+delete-externalsecretyaml:
+	kubectl delete -f secrets-manager/external-secret.yaml \
+
+delete-secretstoreyaml:
+	kubectl delete -f secrets-manager/secret-store.yaml \
+
+uninstall-externalsecretsoperator:
+	helm uninstall external-secrets -n external-secret \
 
 uninstall-extdns:
 	helm uninstall external-dns -n external-dns \
