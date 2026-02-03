@@ -11,8 +11,7 @@ resource "aws_kms_key" "rds" {
 
 resource "random_password" "password" {
   length           = var.password-length
-  special          = true
-  override_special = "_!%^"
+  special          = false
 }
 
 resource "aws_secretsmanager_secret" "rds" {
