@@ -34,8 +34,7 @@ variable "vpc-id" {
   description = "The vpc id"
 }
 
-variable "vpc-cidr" {
+variable "ekscluster-name" {
   type = string
-  description = "The vpc cidr block"
+  description = "The name of the EKS cluster"
 }
-

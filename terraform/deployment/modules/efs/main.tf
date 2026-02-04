@@ -17,6 +17,10 @@ resource "aws_efs_mount_target" "main" {
 
 # EFS Security Group 
 
+data "aws_eks_cluster" "eks" {
+  name = var.ekscluster-name
+}
+
 resource "aws_security_group" "efs" {
   name_prefix = var.efs-sgname
   vpc_id      = var.vpc-id
@@ -26,8 +30,9 @@ resource "aws_security_group" "efs" {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    cidr_blocks = [var.vpc-cidr]
+    cidr_blocks = [data.aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id]
   }
+  
 
   egress {
     from_port   = 0
