@@ -52,8 +52,8 @@ eso-sa                         = "external-secrets"
 
 efs-name       = "eks-efs"
 efs-sgname     = "efs-sg"
-posix_user_uid = 1001
-posix_user_gid = 1001
+posix_user_uid = 10000
+posix_user_gid = 10000
 
 # RDS
 
