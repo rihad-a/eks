@@ -107,7 +107,7 @@ parameters:
   directoryPerms: "775"
   gidRangeStart: "10000"
   gidRangeEnd: "10000" 
-  basePath: "/dynamic_provisioning" 
+  basePath: "/public/uploads" 
 
 ---
 apiVersion: v1
