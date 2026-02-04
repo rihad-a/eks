@@ -106,7 +106,7 @@ parameters:
   fileSystemId: fs-067707df372c9b8f2
   directoryPerms: "770"
   gidRangeStart: "10000"
-  gidRangeEnd: "10001"
+  gidRangeEnd: "10000"
   basePath: "/public/uploads"
 allowVolumeExpansion: true
 
