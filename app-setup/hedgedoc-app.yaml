@@ -101,13 +101,10 @@ apiVersion: storage.k8s.io/v1
 metadata:
   name: efs-sc
 provisioner: efs.csi.aws.com
-volumeBindingMode: WaitForFirstConsumer
 parameters:
   provisioningMode: efs-ap
   fileSystemId: fs-0f23b6e79cf305089
   directoryPerms: 700
-  gidRangeStart: 10000
-  gidRangeEnd: 10000
 
 ---
 apiVersion: v1
