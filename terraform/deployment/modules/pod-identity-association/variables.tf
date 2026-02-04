@@ -65,16 +65,6 @@ variable "efs-csi-driver-policyname" {
   description = "The name of the efs csi driver policy"
 }
 
-variable "efs-csi-driver-namespace" {
-  type        = string
-  description = "The namespace of the efs csi driver"
-}
-
-variable "efs-csi-driver-sa" {
-  type        = string
-  description = "The service account of the efs csi driver"
-}
-
 variable "eso-rolename" {
   type        = string
   description = "The name of the efs csi driver role"
