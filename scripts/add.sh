@@ -85,5 +85,5 @@ helm install argo-cd argo/argo-cd -f helm-values/argocd.yaml \
 # Applying the Argo App
 echo "Applying the Argo App" && \
 cd .. && \
-kubectl apply -f argo-cd/apps-argo.yaml
+kubectl apply -f argo-cd/apps-argo.yaml \
 
