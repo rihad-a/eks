@@ -147,70 +147,43 @@ resource "aws_iam_role" "efs-csi-driver-role" {
 
 resource "aws_iam_policy" "efs-csi-driver-policy" {
   name = var.efs-csi-driver-policyname
+  description = "Policy for EFS CSI driver"
 
   policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+    Version = "2012-10-17"
+    Statement = [
       {
-        "Sid" : "AllowDescribe",
-        "Effect" : "Allow",
-        "Action" : [
+        Effect = "Allow"
+        Action = [
           "elasticfilesystem:DescribeAccessPoints",
           "elasticfilesystem:DescribeFileSystems",
           "elasticfilesystem:DescribeMountTargets",
           "ec2:DescribeAvailabilityZones"
-        ],
-        "Resource" : "*"
+        ]
+        Resource = "*"
       },
       {
-        "Sid" : "AllowCreateAccessPoint",
-        "Effect" : "Allow",
-        "Action" : [
-          "elasticfilesystem:CreateAccessPoint"
-        ],
-        "Resource" : "*",
-        "Condition" : {
-          "Null" : {
-            "aws:RequestTag/efs.csi.aws.com/cluster" : "false"
-          },
-          "ForAllValues:StringEquals" : {
-            "aws:TagKeys" : "efs.csi.aws.com/cluster"
-          }
-        }
-      },
-      {
-        "Sid" : "AllowTagNewAccessPoints",
-        "Effect" : "Allow",
-        "Action" : [
+        Effect = "Allow"
+        Action = [
+          "elasticfilesystem:CreateAccessPoint",
           "elasticfilesystem:TagResource"
-        ],
-        "Resource" : "*",
-        "Condition" : {
-          "StringEquals" : {
-            "elasticfilesystem:CreateAction" : "CreateAccessPoint"
-          },
-          "Null" : {
-            "aws:RequestTag/efs.csi.aws.com/cluster" : "false"
-          },
-          "ForAllValues:StringEquals" : {
-            "aws:TagKeys" : "efs.csi.aws.com/cluster"
-          }
-        }
+        ]
+        Resource = "*"
       },
       {
-        "Sid" : "AllowDeleteAccessPoint",
-        "Effect" : "Allow",
-        "Action" : "elasticfilesystem:DeleteAccessPoint",
-        "Resource" : "*",
-        "Condition" : {
-          "Null" : {
-            "aws:ResourceTag/efs.csi.aws.com/cluster" : "false"
+        Effect = "Allow"
+        Action = [
+          "elasticfilesystem:DeleteAccessPoint"
+        ]
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "elasticfilesystem:AccessedViaMountTarget" = "true"
           }
         }
       }
     ]
-    }
-  )
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "efs-csi-driver" {
