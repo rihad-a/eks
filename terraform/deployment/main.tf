@@ -65,8 +65,6 @@ module "pod-identity-association" {
   extdns-sa                      = var.extdns-sa
   efs-csi-driver-rolename        = var.efs-csi-driver-rolename
   efs-csi-driver-policyname      = var.efs-csi-driver-policyname
-  efs-csi-driver-namespace       = var.efs-csi-driver-namespace
-  efs-csi-driver-sa              = var.efs-csi-driver-sa
   eso-rolename                   = var.eso-rolename
   eso-policyname                 = var.eso-policyname
   eso-namespace                  = var.eso-namespace

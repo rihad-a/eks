@@ -193,8 +193,8 @@ resource "aws_iam_role_policy_attachment" "efs-csi-driver" {
 
 resource "aws_eks_pod_identity_association" "efs-csi-driver" {
   cluster_name    = var.ekscluster-name
-  namespace       = var.efs-csi-driver-namespace
-  service_account = var.efs-csi-driver-sa
+  namespace       = "kube-system"
+  service_account = "efs-csi-controller-sa"
   role_arn        = aws_iam_role.efs-csi-driver-role.arn
 
 }
