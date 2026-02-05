@@ -103,7 +103,11 @@ metadata:
 provisioner: efs.csi.aws.com
 parameters:
   provisioningMode: efs-ap
-  fileSystemId: fs-067707df372c9b8f2
+  fileSystemId:
+  valueFrom:
+    secretKeyRef:
+      name: efs
+      key: FILE_SYSTEM_ID
   directoryPerms: "770"
   gidRangeStart: "10000"
   gidRangeEnd: "10001"
