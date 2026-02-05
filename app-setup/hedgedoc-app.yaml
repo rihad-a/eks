@@ -109,6 +109,7 @@ parameters:
   gidRangeEnd: "10000"
   basePath: "/public/uploads"
 allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
 
 
 ---
