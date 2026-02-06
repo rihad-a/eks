@@ -49,6 +49,11 @@ eso-sa                         = "external-secrets"
 # S3
 
 s3-name                       = "s3-mediaupload"
+block-public-acl              = true
+block-public-policy           = false
+ignore-public-acls            = true
+restrict-public-buckets       = false
+
 
 # RDS
 

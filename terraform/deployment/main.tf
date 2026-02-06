@@ -81,6 +81,10 @@ module "s3" {
   source = "./modules/s3"
 
   s3-name                 = var.s3-name
+  block-public-acl        = var.block-public-acl
+  block-public-policy     = var.block-public-policy
+  ignore-public-acls      = var.ignore-public-acls
+  restrict-public-buckets = var.restrict-public-buckets
 
   # Use these outputs
 

@@ -31,3 +31,12 @@ data "aws_iam_policy_document" "s3-policy" {
 }
 
 
+resource "aws_s3_bucket_public_access_block" "s3-upload" {
+  bucket = aws_s3_bucket.s3-upload.id
+
+  block_public_acls       = var.block-public-acl
+  block_public_policy     = var.block-public-policy
+  ignore_public_acls      = var.ignore-public-acls
+  restrict_public_buckets = var.restrict-public-buckets
+}
+
