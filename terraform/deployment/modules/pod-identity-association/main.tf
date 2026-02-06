@@ -176,7 +176,7 @@ resource "aws_iam_policy" "s3-policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "s3" {
+resource "aws_iam_role_policy_attachment" "s3-policy" {
   policy_arn = aws_iam_policy.s3-policy.arn
   role       = aws_iam_role.s3-role.name
 }
