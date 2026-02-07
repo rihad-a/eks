@@ -110,7 +110,13 @@ Before deploying, customise the Terraform variables:
       - S3 bucket for Terraform state backend
       - ECR repository for Docker images
       - Route 53 hosted zone for your subdomain
-    - Run: `cd terraform/bootstrap && terraform init && terraform apply`
+    - Run commands:
+      ```bash
+      cd terraform
+      cd bootstrap
+      terraform init
+      terraform apply
+      ```
 
 - **Deployment Configuration** (`terraform/deployment/`):
     - Update `provider.tf` with the S3 bucket name from bootstrap output (used for Terraform state backend)
@@ -168,7 +174,10 @@ To trigger any of these workflows, go to **GitHub Actions** and manually run the
 ### Step 1: Bootstrap AWS Environment
 
 ```bash
-cd terraform/bootstrap && terraform init && terraform apply
+cd terraform
+cd bootstrap
+terraform init
+terraform apply
 ```
 
 This creates:
@@ -199,6 +208,29 @@ Use the **Cluster Add-ons Installation** (`add-resources.yml`) workflow to insta
 
 Updates are automated: commit changes to `app/` → Docker image builds and pushes to ECR → Argo CD detects and deploys new version.
 
+### Step 6: Local Testing (Optional)
+
+Before deploying to production, test the HedgeDoc application locally:
+
+**Build Docker Image:**
+```bash
+cd app
+docker build -t hedgedoc:local -f dockerfile .
+```
+
+**Run Locally:**
+```bash
+docker run -d \
+  --name hedgedoc-local \
+  -p 3000:3000 \
+  -e CMD_DOMAIN=localhost \
+  -e CMD_URL_ADDPORT=":3000" \
+  hedgedoc:local
+```
+
+Access the application at `http://localhost:3000`
+
+Verify application functionality before pushing changes to trigger the CI/CD pipeline.
 
 <br>
 
@@ -207,8 +239,13 @@ Updates are automated: commit changes to `app/` → Docker image builds and push
 Use the **Cluster Add-ons Deletion** (`delete-resources.yml`) workflow to uninstall components and clean up S3 media uploads, then use the **Terraform Destroy** (`terraformdestroy-pipeline.yml`) workflow or run locally:
 
 ```bash
-cd terraform/deployment && terraform destroy
-cd ../bootstrap && terraform destroy
+cd terraform
+cd deployment
+terraform destroy
+
+cd ..
+cd bootstrap
+terraform destroy
 ```
 
 
@@ -231,11 +268,14 @@ cd ../bootstrap && terraform destroy
 ## Images & Video
 
 <div align="center">
+
+## Video
   
 |Here's a demo of the working application:|
 |-------|
 |  [![App Demo](https://raw.githubusercontent.com/Rihad-A/hedgedoc-eks/main/media/video-thumbnail.png)](https://github.com/user-attachments/assets/6c4ce4b3-2664-4305-bf55-e0c75d6dd442)  | 
 
+## Images
 
 |The SSL Certificate:|
 |-------|
