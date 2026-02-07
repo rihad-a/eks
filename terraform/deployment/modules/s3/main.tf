@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "s3-policy" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
+      type        = "*"
       identifiers = [
         var.s3-role-arn,
         "arn:aws:iam::291759414346:user/rihad"
@@ -25,7 +25,8 @@ data "aws_iam_policy_document" "s3-policy" {
     }
 
     actions = [
-      "s3:*"
+      "S3:GetObject",
+      "S3:PutObject"
     ]
 
     resources = [
