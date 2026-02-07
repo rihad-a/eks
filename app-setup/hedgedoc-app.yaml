@@ -18,7 +18,6 @@ spec:
         runAsUser: 10000
         runAsGroup: 10000
         fsGroup: 10000
-      serviceAccountName: hedgedoc
       containers:
         - name: hedgedoc
           image: 291759414346.dkr.ecr.eu-west-2.amazonaws.com/eks-project:latest
