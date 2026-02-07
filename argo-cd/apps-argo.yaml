@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: 'https://github.com/rihad-a/eks.git'
+    repoURL: 'https://github.com/rihad-a/hedgedoc-eks.git'
     targetRevision: HEAD
     path: app-setup
 
