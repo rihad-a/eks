@@ -224,7 +224,8 @@ cd ../bootstrap && terraform destroy
 
 |Here's a demo of the working application:|
 |-------|
-https://github.com/user-attachments/assets/6c4ce4b3-2664-4305-bf55-e0c75d6dd442
+| https://github.com/user-attachments/assets/6c4ce4b3-2664-4305-bf55-e0c75d6dd442 |
+
 
 |The SSL Certificate:|
 |-------|
