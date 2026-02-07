@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/rihad-a/hedgedoc-eks.git'
     targetRevision: HEAD
-    path: app-setup
+    path: argo-cd
 
   destination:
     server: 'https://kubernetes.default.svc'
