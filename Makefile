@@ -51,14 +51,9 @@ install-externalsecretsoperator:
 apply-secretstoreyaml:
 	kubectl apply -f secrets-manager/secret-store.yaml \
 
-apply-clustersecretstoreyaml:
-	kubectl apply -f secrets-manager/cluster-secret-store.yaml \
-
 apply-externalsecretyaml:
 	kubectl apply -f secrets-manager/external-secret.yaml \
 
-apply-clusterexternalsecretyaml:
-	kubectl apply -f secrets-manager/cluster-external-secret.yaml \
 
 addrepo-argocd:
 	helm repo add argo \
@@ -110,9 +105,6 @@ deletecrd-argocd:
 
 delete-externalsecretyaml:
 	kubectl delete -f secrets-manager/external-secret.yaml \
-
-delete-s3externalsecretyaml:
-	kubectl delete -f secrets-manager/external-secret-s3.yaml \
 
 delete-secretstoreyaml:
 	kubectl delete -f secrets-manager/secret-store.yaml \
