@@ -169,6 +169,32 @@ To trigger any of these workflows, go to **GitHub Actions** and manually run the
 
 <br>
 
+## Local Testing (Optional)
+
+Before deploying to production, test the HedgeDoc application locally:
+
+**Build Docker Image:**
+```bash
+cd app
+docker build -t hedgedoc:local -f dockerfile .
+```
+
+**Run Locally:**
+```bash
+docker run -d \
+  --name hedgedoc-local \
+  -p 3000:3000 \
+  -e CMD_DOMAIN=localhost \
+  -e CMD_URL_ADDPORT=":3000" \
+  hedgedoc:local
+```
+
+Access the application at `http://localhost:3000`
+
+Verify application functionality before pushing changes to trigger the CI/CD pipeline.
+
+<br>
+
 ## Deployment Steps
 
 ### Step 1: Bootstrap AWS Environment
@@ -207,30 +233,6 @@ Use the **Cluster Add-ons Installation** (`add-resources.yml`) workflow to insta
 ### Step 5: Application Updates
 
 Updates are automated: commit changes to `app/` → Docker image builds and pushes to ECR → Argo CD detects and deploys new version.
-
-### Step 6: Local Testing (Optional)
-
-Before deploying to production, test the HedgeDoc application locally:
-
-**Build Docker Image:**
-```bash
-cd app
-docker build -t hedgedoc:local -f dockerfile .
-```
-
-**Run Locally:**
-```bash
-docker run -d \
-  --name hedgedoc-local \
-  -p 3000:3000 \
-  -e CMD_DOMAIN=localhost \
-  -e CMD_URL_ADDPORT=":3000" \
-  hedgedoc:local
-```
-
-Access the application at `http://localhost:3000`
-
-Verify application functionality before pushing changes to trigger the CI/CD pipeline.
 
 <br>
 
